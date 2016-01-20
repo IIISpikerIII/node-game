@@ -5,15 +5,19 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('app4:server');
-var http = require('http');
-var config = require('../config');
+var debugLogger = require('debug');
+var debug = debugLogger('debug');
+var warn = debugLogger('warn');
 
+var http = require('http');
+
+var config = require('../config');
 /**
  * Get port from environment and store in Express.
  */
 
-app.set('port', config.get('port'));
+var port = config.get('port');
+app.set('port', port);
 
 /**
  * Create HTTP server.
@@ -25,10 +29,12 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(config.get('port'));
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+var io = require('../modules/socket')(server);
+app.set('io',io);
 /**
  * Normalize a port into a number, string, or false.
  */

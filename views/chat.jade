@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  #room
+    ul.list-unstyled
+    form(name="msg", method="post")
+        input.form-control(autocomplete="off", placeholder="Сообщение..")
+
+    script.
+        var socket = io.connect('', {
+            reconnection: true
+        });
+
+        var form = $('#room form');
+        var ul = $('#room ul');
+        var input = $('#room input');
+        form.on('submit', sendMessage);
+        input.prop('disabled', false);
+
+        socket
+            .on('connect', function () {
+                printStatus("соединение установлено");
+                form.on('submit', sendMessage);
+                input.prop('disabled', false);
+            })
+            .on('message', function (username, message) {
+                 printMessage(username + "> " + message);
+            })
+            .on('leave', function (username) {
+                printStatus(username + " вышел из чата");
+            });
+
+        function printStatus(status) {
+            $('<li>').append($('<i>').text(status)).appendTo(ul);
+        }
+
+        function printMessage(text) {
+            $('<li>').text(text).appendTo(ul);
+        }
+
+        function sendMessage() {
+            var text = input.val();
+            socket.emit('message', text, function () {
+                printMessage("я> " + text);
+            });
+            input.val('');
+            return false;
+        }

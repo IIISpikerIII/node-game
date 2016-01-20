@@ -1,0 +1,26 @@
+{
+  "name": "node-game",
+  "description": "node game with socketio",
+  "main": "GAME",
+  "authors": [
+    "Nikita Zorin <iiispikeriii@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "nodejs",
+    "socketio"
+  ],
+  "homepage": "https://github.com/IIISpikerIII/node-game",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "socket.io-client": "~1.4.4",
+    "jquery": "~2.2.0"
+  }
+}

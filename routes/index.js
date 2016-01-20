@@ -1,9 +1,24 @@
-var express = require('express');
-var router = express.Router();
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
+module.exports = function(app) {
+    app.get('/', require('./main'));
+    app.get('/users', require('./users'));
+    app.get('/chat', require('./chat'));
+    //app.post('/login', require('./login').post);
+    //app.post('/logout', require('./logout').post);
+    //app.get('/chat', checkAuth, require('./chat').get);
+    //app.get('/user/:id', function(req, res, next) {
+    //
+    //    try {
+    //        var id = new ObjectID(req.params.id)
+    //    } catch (e) {
+    //        return next(404);
+    //    }
+    //
+    //    User.findById(id, function(err, user) {
+    //        if(err) return next(err);
+    //        if(!user) {
+    //            next(new HttpError(404, "User not found"));
+    //        }
+    //        res.json(user);
+    //    });
+    //});
+};
