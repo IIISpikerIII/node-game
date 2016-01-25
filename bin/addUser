@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var User = require('../models/user.js').User;
+
+function addUser(username, password) {
+    var user = new User({username: username, password: password});
+    user.save(function (err) {
+        err ? console.log(err) : console.log('+ ' + user.username);
+    });
+}
+
+addUser('admin', 'admin');
