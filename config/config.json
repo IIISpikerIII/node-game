@@ -9,7 +9,9 @@
         "cookie": {
             "path": "/",
             "httpOnly": true,
-            "maxAge": null
+            "maxAge": 60000,
+            "overwrite": true,
+            "signed": true
         }
     }
 }

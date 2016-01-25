@@ -5,7 +5,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var config = require('./config');
-var session = require('express-session')
+var session = require('express-session');
+var flash = require('connect-flash');
+//var passport = require('./lib/passport');
+var passport = exports.passport = require('passport');
 
 var app = express();
 
@@ -28,11 +31,29 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-require('./routes')(app);
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+//flash
+app.use(flash());
+
+require('./auth/local-strategy.js');
+
+//TODO refactoring this route
+app.post('/login', passport.authenticate('UserLogin',
+     { successRedirect: '/loginSuccess',
+         failureRedirect: '/loginFailure',
+         failureFlash: true })
+);
+
+var routes = require('./routes');
+app.use(routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -64,6 +85,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
