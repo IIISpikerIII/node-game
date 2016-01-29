@@ -14,3 +14,9 @@ Add user (admin, admin): **node bin/addUser**
 /main
 
 /login authorized form
+
+### Run server
+
+```
+npm run start
+```
