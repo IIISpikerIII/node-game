@@ -11,9 +11,9 @@ Add user (admin, admin): **node bin/addUser**
   DEBUG = debug, warn
   
 ### Routes
-/main
+/  - main
 
-/login authorized form
+/login   - authorized form
 
 ### Run server
 

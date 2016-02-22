@@ -8,6 +8,14 @@ var login = require('./login');
 router.get('/login', login.get);
 router.post('/login', login.post);
 
+//game
+var game = require('./game');
+router.get('/game', game.get);
+
+//game
+var users = require('./users');
+router.get('/users', users.get);
+
 router.get('/loginFailure', function(req, res, next) {
     res.send('Failed to authenticate');
 });

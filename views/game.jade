@@ -29,6 +29,9 @@ block content
             .on('message', function (username, message) {
                  printMessage(username + "> " + message);
             })
+            .on('join', function (username) {
+                    printStatus(username + " вошёл в чат");
+                })
             .on('leave', function (username) {
                 printStatus(username + " вышел из чата");
             });

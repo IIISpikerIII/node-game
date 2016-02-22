@@ -6,8 +6,8 @@ html
     script(src='/vendor/bower_components/socket.io-client/socket.io.js')
     script(src='/vendor/bower_components/jquery/dist/jquery.js')
   body
-      if message
-      .alert.alert-danger #{message}
-
+      div
+          a(href='/')|  Главная  |
+          a(href='/login')|  Login  |
+          a(href='/game')|  Game  |
       block content
-
