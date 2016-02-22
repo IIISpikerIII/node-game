@@ -11,12 +11,20 @@ Add user (admin, admin): **node bin/addUser**
   DEBUG = debug, warn
   
 ### Routes
-/  - main
+**/**  - main
 
-/login   - authorized form
+**/login**   - authorized form
+
+**/game**   - game page
 
 ### Run server
 
 ```
 npm run start
 ```
+
+### Architecture
+
+**modules/socket/index.js** listening clients events
+
+**views/game.jade** listening server events
