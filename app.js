@@ -6,11 +6,11 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var config = require('./config');
 var session = require('express-session');
-var flash = require('connect-flash');
 //var passport = require('./lib/passport');
 var passport = exports.passport = require('passport');
-
 var app = express();
+
+app.set('passport',passport);
 
 //Session
 var sessionStore = require('./lib/sessionStore');
@@ -28,7 +28,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,10 +39,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-//flash
-app.use(flash());
-
 require('./auth/local-strategy.js');
+
+var mdlUsername = require("./middlewares/username");
+app.use(mdlUsername);
 
 //TODO refactoring this route
 app.post('/login', passport.authenticate('UserLogin',
@@ -75,7 +74,6 @@ if (app.get('env') === 'development') {
     });
   });
 }
-
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {

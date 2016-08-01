@@ -1,26 +1,27 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', require('./main'));
+//middlewares
+var mdlUsername = require("../middlewares/username");
+
+var main = require('./main');
+router.get('/', [main.get]);
 
 //login
-var login = require('./login');
-router.get('/login', login.get);
-router.post('/login', login.post);
+var users = require('./users');
+router.get('/login', users.get);
+router.post('/login', users.post);
+router.get('/registration', users.registration);
+router.post('/registration', users.registrationPost);
 
 //game
 var game = require('./game');
 router.get('/game', game.get);
 
-//game
-var users = require('./users');
-router.get('/users', users.get);
 
-router.get('/loginFailure', function(req, res, next) {
+router.get('/loginFailure', function (req, res, next) {
     res.send('Failed to authenticate');
 });
-router.get('/loginSuccess', function(req, res, next) {
-    res.send('Successfully authenticated');
-});
+router.get('/loginSuccess', [main.get]);
 
 module.exports = router;

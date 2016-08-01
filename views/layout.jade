@@ -8,6 +8,8 @@ html
   body
       div
           a(href='/')|  Главная  |
-          a(href='/login')|  Login  |
+          if(username == false)
+            a(href='/login')|  Login  |
+            a(href='/registration')|  Registration  |
           a(href='/game')|  Game  |
       block content

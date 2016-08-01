@@ -46,6 +46,31 @@ module.exports = function(server) {
         socket.on('disconnect', function() {
             socket.broadcast.emit('leave', username);
         });
+
+        socket.on('game:start', function(cb) {
+            socket.join('waitingRoom');
+            //console.log(io.sockets.sockets);
+            if(socket.adapter.rooms.waitingRoom.length == 3) {
+                var scs = socket.adapter.rooms.waitingRoom.sockets;
+                var roomName =  JSON.stringify(scs);
+                for (var s in scs) {
+                    io.sockets.sockets[s].leave('waitingRoom');
+                    io.sockets.sockets[s].join(roomName);
+                }
+                socket.broadcast.to(roomName).emit('message', username, 'GAME BEGIN!');
+            } else {
+                socket.broadcast.emit('message', username, 'game start');
+            }
+
+            cb && cb();
+        });
+
+        socket.on('rooms:status', function(cb) {
+
+                socket.emit('rooms:status', username, JSON.stringify(socket.adapter.rooms));
+
+            cb && cb();
+        });
     });
 
     return io;

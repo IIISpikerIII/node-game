@@ -68,6 +68,46 @@ schema.statics.authorize = function(username, password, callback) {
     );
 };
 
+schema.statics.registration = function(username, password, callback) {
+    var User = this;
+    async.waterfall(
+            [
+                function (callback) {
+                    User.findOne({username: username}, callback);
+                },
+                function (user, callback) {
+                    if (user) {
+                        if (user.checkPassword(password)) {
+                            callback(null, user);
+                        }
+                    } else {
+                        var user = new User({username: username, password: password});
+                        user.save(function (err) {
+                            if (err) return callback(err);
+                            callback(null, user);
+                        });
+                    }
+                }
+            ],
+            callback
+    );
+};
+
+schema.statics.getUsername = function(userId, callback)
+{
+    if(!userId) {
+        callback(null, null);
+    } else {
+        this.findOne({_id: userId}, function(err, user){
+            if(err){
+                callback(err, null);
+            } else {
+                callback(null, user.username);
+            }
+        });
+    }
+};
+
 exports.User = mongoose.model('User', schema);
 
 function AuthError( message) {

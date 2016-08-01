@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  span#start-game Start Game ||
+  span#status-rooms Status Rooms
 
   #room
     ul.list-unstyled
@@ -18,6 +20,9 @@ block content
         var ul = $('#room ul');
         var input = $('#room input');
         form.on('submit', sendMessage);
+        $('#start-game').on('click', gameStart);
+        $('#status-rooms').on('click', roomsStatus);
+
         input.prop('disabled', false);
 
         socket
@@ -29,6 +34,11 @@ block content
             .on('message', function (username, message) {
                  printMessage(username + "> " + message);
             })
+            .on('rooms:status', function (username, message) {
+                    message = JSON.parse(message);
+                    console.log(message);
+                    printMessage('rooms in console');
+                })
             .on('join', function (username) {
                     printStatus(username + " вошёл в чат");
                 })
@@ -50,5 +60,15 @@ block content
                 printMessage("я> " + text);
             });
             input.val('');
+            return false;
+        }
+
+        function gameStart() {
+            socket.emit('game:start');
+            return false;
+        }
+
+        function roomsStatus() {
+            socket.emit('rooms:status');
             return false;
         }
